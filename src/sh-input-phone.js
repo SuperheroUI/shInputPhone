@@ -10,19 +10,6 @@ import ShCore from 'sh-core';
 
 let phoneUtil = PhoneNumberUtil.getInstance();
 
-let getCountryOptions = function () {
-    return _.map(countryCodes.getData(), (country, abrev) => {
-        let countryCode = phoneUtil.getCountryCodeForRegion(abrev);
-        return {
-            label: `+${countryCode}`,
-            name: `${country} +${countryCode}`,
-            abb: abrev,
-            id: countryCode,
-            countryCode: countryCode
-        };
-    });
-};
-
 class ShInputPhone extends React.Component {
     constructor(props) {
         super(props);
@@ -33,8 +20,8 @@ class ShInputPhone extends React.Component {
         };
 
         this.state = {
-            countryList: getCountryOptions(),
-            country: _.find(getCountryOptions(), {abb: 'US'}),
+            countryList: this.getCountryOptions(),
+            country: _.find(this.getCountryOptions(), {abb: props.country}),
             value: '',
             classList: {
                 shInputPhone: true,
@@ -53,6 +40,7 @@ class ShInputPhone extends React.Component {
         this.internationalFormat = this.internationalFormat.bind(this);
         this.localFormat = this.localFormat.bind(this);
         this.getNumber = this.getNumber.bind(this);
+        this.getCountryOptions = this.getCountryOptions.bind(this);
     }
 
     validate(onSubmit) {
@@ -117,8 +105,22 @@ class ShInputPhone extends React.Component {
         if (this.props.required) {
             this.setState({requiredField: {showRequired: true}});
         }
+
         this.state.placeholderHolder = this.state.placeholderText;
     }
+
+    getCountryOptions() {
+    return _.map(countryCodes.getData(), (country, abrev) => {
+        let countryCode = phoneUtil.getCountryCodeForRegion(abrev);
+        return {
+            label: `+${countryCode}`,
+            name: `${country} +${countryCode}`,
+            abb: abrev,
+            id: countryCode,
+            countryCode: countryCode
+        };
+    });
+};
 
     handlePhoneChange(event) {
         let val = event.target.value.replace(/\D/g, '');
@@ -211,6 +213,7 @@ class ShInputPhone extends React.Component {
             onFocus,
             onBlur,
             required,
+            country,
             ...other
         } = this.props;
 
@@ -248,13 +251,15 @@ ShInputPhone.propTypes = {
     onChange: React.PropTypes.func,
     label: React.PropTypes.string,
     required: React.PropTypes.bool,
+    country: React.PropTypes.string
 };
 
 ShInputPhone.defaultProps = {
     validator: null,
     onChange: _.noop,
     label: '',
-    required: false
+    required: false,
+    country: 'US'
 };
 
 export default ShInputPhone;
