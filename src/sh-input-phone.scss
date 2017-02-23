@@ -1,0 +1,159 @@
+@import '../node_modules/sh-core/src/base';
+
+$width: 58px;
+
+.sh-input-phone {
+    display: inline-block;
+    height: 50px;
+    width: 100%;
+    position: relative;
+    border: 1px solid $color-box-background3;
+    border-radius: $size-border-radius-small;
+    transition: background $transition-hover, box-shadow $transition-fast, border $transition-fast;
+
+    .sh-input-phone-text {
+        position: absolute;
+        width: 100%;
+        left: $width;
+        z-index: 100;
+    }
+
+    label {
+        position: relative;
+        display: block;
+        height: 50px;
+        width: calc(100% - #{$width});
+    }
+
+    .label {
+        position: absolute;
+        top: 5px;
+        left: -52px;
+        right: 5px;
+
+        font-size: $size-font-small;
+        color: $color-font-label;
+        text-transform: uppercase;
+        z-index: 1;
+        @include ellipsis;
+    }
+
+    @include focus;
+
+    &:hover {
+        background: $color-box-background5;
+    }
+
+    &.empty {
+        background: $color-box-background5;
+    }
+
+    &.sh-invalid {
+        &.sh-touched {
+            border: 1px solid $color-error;
+        }
+    }
+
+    input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        padding: 25px 5px 5px 5px;
+        font-size: 14px;
+
+        color: $color-font;
+        border-radius: $size-border-radius-small;
+        background: transparent;
+
+        transition: background $transition-hover, box-shadow $transition-fast, border $transition-fast;
+        border: 1px solid $color-transparent;
+
+
+        @mixin placeholder {
+            opacity: 1;
+        }
+
+        &::-moz-placeholder {
+            @include placeholder;
+        }
+
+        &:-ms-input-placeholder {
+            @include placeholder;
+        }
+
+        &::-webkit-input-placeholder {
+            @include placeholder;
+        }
+    }
+
+    .required-label {
+        font-size: $size-font-small;
+        text-transform: uppercase;
+        opacity: 0;
+        position: absolute;
+        right: 4px;
+        top: 4px;
+        color: $color-line4;
+        transition: opacity $transition;
+
+        &.show-required {
+            opacity: 1;
+            transition: opacity $transition;
+        }
+    }
+
+    .sh-input-select {
+        height: 48px;
+        position: absolute;
+        left: 0;
+        top: 0;
+
+        .dropdown-wrapper {
+            z-index: 600;
+        }
+
+        &:hover {
+            .input {
+                background: none;
+            }
+        }
+
+        &:focus {
+            .input {
+                background: none;
+            }
+        }
+
+        .input {
+            background: none;
+            width: $width;
+
+            &:focus {
+                box-shadow: none;
+            }
+
+            .icon-svg {
+                height: 15px !important;
+                width: 15px !important;
+                left: 6px ;
+                top: 27px;
+                fill: $color-primary;
+            }
+
+            .input-selected {
+                height: 34px;
+                width: 100%;
+                text-align: right;
+                position: absolute;
+                font-size: 14px;
+                color: $color-font;
+                top: 14px;
+                line-height: 1;
+                padding: 15px 0 0;
+            }
+        }
+    }
+}
+
