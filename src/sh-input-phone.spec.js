@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 
 let ShInputPhone = require('./sh-input-phone').default;
 
-describe('root', function () {
+fdescribe('root', function () {
     it('renders without problems', function () {
         let value = true;
         let root = TestUtils.renderIntoDocument(<ShInputPhone value={value}/>);
@@ -17,11 +17,11 @@ describe('root', function () {
 
         let root = TestUtils.renderIntoDocument(<ShInputPhone value={value} />);
         let rootNode = ReactDOM.findDOMNode(root);
-        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-text-input');
+        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-input-phone');
         root.handlePhoneChange({target:{value:2}});
 
         TestUtils.Simulate.blur(input);
-        expect(rootNode.classList.length).toBe(1)
+        expect(rootNode.classList.length).toBe(2)
     });
 
     it('set classes from parent', function () {
@@ -41,7 +41,7 @@ describe('root', function () {
 
         let root = TestUtils.renderIntoDocument(<ShInputPhone value={value} onBlur={onBlur}/>);
         expect(root.state).toBeTruthy();
-        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-text-input');
+        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-phone-input');
         TestUtils.Simulate.blur(input);
         expect(blurTest).toBe(1)
     });
@@ -55,7 +55,7 @@ describe('root', function () {
 
         let root = TestUtils.renderIntoDocument(<ShInputPhone value={value} onFocus={onFocus}/>);
         expect(root.state).toBeTruthy();
-        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-text-input');
+        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-phone-input');
         TestUtils.Simulate.focus(input);
         expect(focusTest).toBe(1)
     });
@@ -68,9 +68,10 @@ describe('root', function () {
         let root = TestUtils.renderIntoDocument(<ShInputPhone required value={what} onChange={changeMe}/>);
         let rootNode = ReactDOM.findDOMNode(root);
         expect(root.state).toBeTruthy();
-        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-text-input');
+        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-phone-input');
         expect(root.state.requiredField.showRequired).toBe(true);
-        expect(input.placeholder).toBe('+');
+        //some day it would be cool to put the phone format here as a placeholder
+        expect(input.placeholder).toBe('');
     });
 
     it('the required label should not show up if the field is not required', function () {
@@ -80,26 +81,26 @@ describe('root', function () {
         };
         let root = TestUtils.renderIntoDocument(<ShInputPhone value={what} onChange={changeMe}/>);
         expect(root.state).toBeTruthy();
-        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-text-input');
+        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-phone-input');
         TestUtils.Simulate.focus(input);
         TestUtils.Simulate.blur(input);
         expect(root.state.requiredField.showRequired).toBe(false);
-        expect(input.placeholder).toBe('+');
+        expect(input.placeholder).toBe('');
     });
 
     it('input styles be set to empty if there is no value', function () {
         let root = TestUtils.renderIntoDocument(<ShInputPhone  />);
         let rootNode = ReactDOM.findDOMNode(root);
         expect(root.state).toBeTruthy();
-        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-text-input');
+        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-input-phone');
         TestUtils.Simulate.blur(input);
         expect(rootNode.classList[1]).toBe('empty')
     });
 
-    it('handle internal changes', function () {
+    it('handle internal changes format value as a telephone number', function () {
         let value = '0';
         let changeMe = () => {
-            value = 'hi';
+            value = '1';
         };
 
         let validator = {
@@ -108,24 +109,24 @@ describe('root', function () {
         };
         spyOn(validator, 'validate');
         let root = TestUtils.renderIntoDocument(<ShInputPhone value={value} validator={validator} onChange={changeMe}/>);
-        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-text-input');
+        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-phone-input');
 
         root.handlePhoneChange({
             target: {
-                value: 'the fat lazy cat'
+                value: 8013560504
             }
         });
         expect(validator.validate).toHaveBeenCalled();
 
         TestUtils.Simulate.blur(input);
-        expect(input.value).toBe('the fat lazy cat');
+        expect(input.value).toBe('(801) 356-0504');
     });
 
     it('handle focus', function () {
         let value = '0';
 
         let root = TestUtils.renderIntoDocument(<ShInputPhone value={value}/>);
-        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-text-input');
+        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-input-phone');
 
         TestUtils.Simulate.focus(input);
     });
@@ -137,44 +138,44 @@ describe('root', function () {
         };
 
         let root = TestUtils.renderIntoDocument(<ShInputPhone value={value}  onChange={changeMe}/>);
-        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-text-input');
+        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-phone-input');
 
         root.handlePhoneChange({
             target: {
-                value: 'the fat lazy cat'
+                value: 8013560504
             }
         });
 
         TestUtils.Simulate.blur(input);
-        expect(input.value).toBe('the fat lazy cat');
+        expect(input.value).toBe('(801) 356-0504');
     });
 
     it('handle internal changes w prop onchange', function () {
         let value = '0';
 
         let root = TestUtils.renderIntoDocument(<ShInputPhone value={value} />);
-        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-text-input');
+        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-phone-input');
 
         root.handlePhoneChange({
             target: {
-                value: 'the fat lazy cat'
+                value: 8013560504
             }
         });
 
         TestUtils.Simulate.blur(input);
-        expect(input.value).toBe('the fat lazy cat');
+        expect(input.value).toBe('(801) 356-0504');
     });
 
     it('should have a validator function', function(){
         let root = TestUtils.renderIntoDocument(<ShInputPhone />);
-        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-text-input');
+        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-input-phone');
         expect(root.validate().isValid).toBe(true);
     });
 
     it('should fail validator if there is no value and field is required', function(){
         let value = null;
         let root = TestUtils.renderIntoDocument(<ShInputPhone value={value} required />);
-        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-text-input');
+        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-input-phone');
         expect(root.validate().isValid).toBe(false);
     });
 
@@ -185,7 +186,7 @@ describe('root', function () {
         };
         spyOn(validator, 'register');
         let root = TestUtils.renderIntoDocument(<ShInputPhone validator={validator} value={value} required />);
-        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-text-input');
+        let input = TestUtils.findRenderedDOMComponentWithClass(root, 'sh-input-phone');
         expect(validator.register).toHaveBeenCalled();
     });
 

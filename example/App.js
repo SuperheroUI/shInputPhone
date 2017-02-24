@@ -12,16 +12,21 @@ class App extends React.Component {
             val: ''
         };
         this.handleOneChange = this.handleOneChange.bind(this);
+        this.test = this.test.bind(this);
     }
 
     handleOneChange(number) {
         this.setState({val: number});
     }
 
+    test(){
+        console.log('test')
+    }
+
     render() {
         return <div>
             <ShForm >
-                <ShInputPhone  label="Office Phone" value={this.state.val} onChange={this.handleOneChange} />
+                <ShInputPhone  label="Office Phone" value={this.state.val} onBlur={this.test} onChange={this.handleOneChange} />
                 {this.state.val}
                 <ShInputText label="Favorite Color"/>
             </ShForm>

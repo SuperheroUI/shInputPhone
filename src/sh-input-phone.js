@@ -83,7 +83,7 @@ class ShInputPhone extends React.Component {
     };
 
     componentWillReceiveProps(props) {
-        if (!_.isUndefined(props.value) && !_.isEqual(props.value, this.state.value)) {
+        if (props.value && !_.isUndefined(props.value) && !_.isEqual(props.value, this.state.value)) {
             let newState = _.clone(this.state);
             newState.classList.empty = !props.value;
             let code = '+' + this.state.country.countryCode.toString();
@@ -110,20 +110,21 @@ class ShInputPhone extends React.Component {
     }
 
     getCountryOptions() {
-    return _.map(countryCodes.getData(), (country, abrev) => {
-        let countryCode = phoneUtil.getCountryCodeForRegion(abrev);
-        return {
-            label: `+${countryCode}`,
-            name: `${country} +${countryCode}`,
-            abb: abrev,
-            id: countryCode,
-            countryCode: countryCode
-        };
-    });
-};
+        return _.map(countryCodes.getData(), (country, abrev) => {
+            let countryCode = phoneUtil.getCountryCodeForRegion(abrev);
+            return {
+                label: `+${countryCode}`,
+                name: `${country} +${countryCode}`,
+                abb: abrev,
+                id: countryCode,
+                countryCode: countryCode
+            };
+        });
+    };
 
     handlePhoneChange(event) {
-        let val = event.target.value.replace(/\D/g, '');
+        let val = event.target.value.toString() || '';
+        val = val.replace(/\D/g, '');
 
         this.setState({value: this.localFormat(val, this.state.country.abb, phoneUtil)}, () => {
             if (this.props.validator) {
