@@ -26,7 +26,7 @@ class App extends React.Component {
     render() {
         return <div>
             <ShForm >
-                <ShInputPhone  label="Office Phone" value={this.state.val} onBlur={this.test} onChange={this.handleOneChange} />
+                <ShInputPhone required label="Office Phone" value={this.state.val} onBlur={this.test} onChange={this.handleOneChange} />
                 {this.state.val}
                 <ShInputText label="Favorite Color"/>
             </ShForm>

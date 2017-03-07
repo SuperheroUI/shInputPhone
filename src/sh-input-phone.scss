@@ -13,7 +13,7 @@ $width: 58px;
 
     .sh-input-phone-text {
         position: absolute;
-        width: 100%;
+        width: calc(100% - #{$width});
         left: $width;
         z-index: 100;
     }
@@ -22,7 +22,6 @@ $width: 58px;
         position: relative;
         display: block;
         height: 50px;
-        width: calc(100% - #{$width});
     }
 
     .label {
@@ -69,7 +68,6 @@ $width: 58px;
 
         transition: background $transition-hover, box-shadow $transition-fast, border $transition-fast;
         border: 1px solid $color-transparent;
-
 
         @mixin placeholder {
             opacity: 1;
@@ -137,7 +135,7 @@ $width: 58px;
             .icon-svg {
                 height: 15px !important;
                 width: 15px !important;
-                left: 6px ;
+                left: 6px;
                 top: 27px;
                 fill: $color-primary;
             }

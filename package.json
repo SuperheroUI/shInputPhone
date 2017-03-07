@@ -1,6 +1,6 @@
 {
   "name": "sh-input-phone",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "phone input box superhero theme",
   "main": "./bin/sh-input-phone.js",
   "scripts": {
